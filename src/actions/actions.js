@@ -1,0 +1,1 @@
+export const BOOKS_ADDED = (newBooks) => ({ type: 'BOOKS_ADDED', payload: newBooks });
