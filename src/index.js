@@ -1,27 +1,26 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import App from './components/app/app';
-import { BookstoreServiceProvider } from './components/bookstore-service-context';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
+import App from './components/app';
+import ErrorBoundry from './components/error-boundry';
 import BookstoreService from './services/bookstore-service';
-import ErrorBoundry from './components/error-boundry'
+import { BookstoreServiceProvider } from './components/bookstore-service-context';
+
 import store from './store';
-import { BrowserRouter as Router, Switch, Route, Routes } from 'react-router-dom';
-import HomePage from './components/pages/homepage/homepage';
 
 const bookstoreService = new BookstoreService();
 const container = document.getElementById('root');
-
-const root = ReactDOM.createRoot(container);
+const root = createRoot(container);
 
 root.render(
-    <Provider store={store}>
-        <ErrorBoundry>
-            <BookstoreServiceProvider value={bookstoreService}>
-                <Router>
-                    <App />
-                </Router>
-            </BookstoreServiceProvider>
-        </ErrorBoundry>
-    </Provider>,
+  <Provider store={store}>
+    <ErrorBoundry>
+      <BookstoreServiceProvider value={bookstoreService}>
+        <Router>
+          <App />
+        </Router>
+      </BookstoreServiceProvider>
+    </ErrorBoundry>
+  </Provider>,
 );
