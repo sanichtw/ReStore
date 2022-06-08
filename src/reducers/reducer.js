@@ -21,17 +21,15 @@ const updateItem = (book, item = {}) => {
 
 const updateCartItems = (state, newItem, cartIndex) => {
   if (cartIndex === -1) {
-    return {
-      ...state.cartItems,
-      newItem
-    }
+    debugger
+    return [...state.cartItems, newItem]
   }
 
-  return {
+  return [
     ...state.cartItems.splice(0, cartIndex),
     newItem,
     ...state.cartItems.splice(cartIndex + 1)
-  }
+  ]
 };
 
 const reducer = (state = initialState, action) => {
@@ -63,12 +61,12 @@ const reducer = (state = initialState, action) => {
       const book = state.books.find(book => book.id === action.payload);
       const cartIndex = state.cartItems.findIndex(item => item.id === action.payload);
       const item = state.cartItems[cartIndex];
-
+      debugger
       const newItem = updateItem(book, item);
-
+      debugger
       return {
         ...state,
-        cartItems: [updateCartItems(state, newItem, cartIndex)]
+        cartItems: updateCartItems(state, newItem, cartIndex)
       }
 
     default:

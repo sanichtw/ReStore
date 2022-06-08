@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteBook } from '../../actions/actions';
 import './shopping-cart-table.css';
 
 const ShoppingCartTable = ({ items, total, onIncrease, onDecrease, onDelete }) => {
