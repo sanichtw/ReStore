@@ -7,6 +7,33 @@ const initialState = {
   orderTotal: 0
 };
 
+const updateItem = (book, item = {}) => {
+  const { id = book.id, title = book.title,
+    price = 0, total = 0 } = item;
+  debugger
+  return {
+    id,
+    title,
+    price: price + book.price,
+    total: total + 1
+  }
+};
+
+const updateCartItems = (state, newItem, cartIndex) => {
+  if (cartIndex === -1) {
+    return {
+      ...state.cartItems,
+      newItem
+    }
+  }
+
+  return {
+    ...state.cartItems.splice(0, cartIndex),
+    newItem,
+    ...state.cartItems.splice(cartIndex + 1)
+  }
+};
+
 const reducer = (state = initialState, action) => {
 
   switch (action.type) {
@@ -33,35 +60,15 @@ const reducer = (state = initialState, action) => {
       }
 
     case 'ON_ADDED_TO_CART':
-      const newItem = state.books.find(book => book.id === action.payload);
-      const checkedItem = state.cartItems.find(book => book.name === newItem.title);
-      let total = 0;
-      for (let i = 0; i < state.cartItems.length; i++) {
-        total += state.cartItems[i].count * state.cartItems[i].total
-        debugger
-      }
-      if (checkedItem) {
-        checkedItem.total += 1
-        return {
-          ...state,
-          cartItems: [
-            ...state.cartItems,
-          ],
-          orderTotal: total
-        }
-      }
+      const book = state.books.find(book => book.id === action.payload);
+      const cartIndex = state.cartItems.findIndex(item => item.id === action.payload);
+      const item = state.cartItems[cartIndex];
+
+      const newItem = updateItem(book, item);
 
       return {
         ...state,
-        cartItems: [
-          ...state.cartItems,
-          {
-            id: newItem.id,
-            name: newItem.title,
-            count: newItem.price,
-            total: 1
-          },
-        ]
+        cartItems: [updateCartItems(state, newItem, cartIndex)]
       }
 
     default:
