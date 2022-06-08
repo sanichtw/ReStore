@@ -4,11 +4,12 @@ import ShopHeader from '../shop-header';
 import { HomePage, CartPage } from '../pages';
 
 import './app.css';
+import { connect } from 'react-redux';
 
-const App = () => {
+const App = ({itemsLength}) => {
   return (
     <main role="main" className="container">
-      <ShopHeader numItems={5} total={210} />
+      <ShopHeader numItems={itemsLength} total={210} />
       <Routes>
         <Route
           path="/"
@@ -24,4 +25,10 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    itemsLength: state.cartItems.length
+  }
+};
+
+export default connect(mapStateToProps, {})(App);
