@@ -8,3 +8,5 @@ export const fetchBooks = (dispatch, bookstoreService) => () => {
         .then(data => dispatch(booksLoaded(data)))
         .catch(err => dispatch(booksError(err)))
 };
+export const onDeleteCart = (idx) => ({ type: 'ON_DELETE_CART', payload: idx });
+export const onIncreaseCart = (idx) => ({ type: 'ON_INCREASE_CART', payload: idx });

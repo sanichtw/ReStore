@@ -10,7 +10,6 @@ const initialState = {
 const updateItem = (book, item = {}) => {
   const { id = book.id, title = book.title,
     price = 0, total = 0 } = item;
-  debugger
   return {
     id,
     title,
@@ -19,16 +18,15 @@ const updateItem = (book, item = {}) => {
   }
 };
 
-const updateCartItems = (state, newItem, cartIndex) => {
+const updateCartItems = (cartItems, newItem, cartIndex) => {
   if (cartIndex === -1) {
-    debugger
-    return [...state.cartItems, newItem]
+    return [...cartItems, newItem]
   }
 
   return [
-    ...state.cartItems.splice(0, cartIndex),
+    ...cartItems.slice(0, cartIndex),
     newItem,
-    ...state.cartItems.splice(cartIndex + 1)
+    ...cartItems.slice(cartIndex + 1)
   ]
 };
 
@@ -61,12 +59,19 @@ const reducer = (state = initialState, action) => {
       const book = state.books.find(book => book.id === action.payload);
       const cartIndex = state.cartItems.findIndex(item => item.id === action.payload);
       const item = state.cartItems[cartIndex];
-      debugger
       const newItem = updateItem(book, item);
-      debugger
       return {
         ...state,
-        cartItems: updateCartItems(state, newItem, cartIndex)
+        cartItems: updateCartItems(state.cartItems, newItem, cartIndex)
+      }
+
+    case 'ON_DELETE_CART':
+      const idx = action.payload;
+      const delIndex = state.cartItems.findIndex(cart => cart.id === idx)
+
+      return {
+        ...state,
+        cartItems: [...state.cartItems.slice(0, delIndex), ...state.cartItems.slice(delIndex + 1)]
       }
 
     default:
