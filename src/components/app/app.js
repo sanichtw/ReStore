@@ -6,7 +6,7 @@ import { HomePage, CartPage } from '../pages';
 import './app.css';
 import { connect } from 'react-redux';
 
-const App = ({itemsLength}) => {
+const App = ({ itemsLength }) => {
   return (
     <main role="main" className="container">
       <ShopHeader numItems={itemsLength} total={210} />
@@ -25,9 +25,9 @@ const App = ({itemsLength}) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ shoppingCartList: { cartItems } }) => {
   return {
-    itemsLength: state.cartItems.length
+    itemsLength: cartItems.length
   }
 };
 
